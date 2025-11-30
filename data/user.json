@@ -1,0 +1,42 @@
+[
+  {
+    "id": "e4fcca99-9c0b-4ef8-bb6d-6bb9bd380a15",
+    "email": "dedek@kampus.com",
+    "password": "12345678",
+    "full_name": "Dedek Kurniawan",
+    "role": "admin",
+    "created_at": "2025-11-30T09:00:00.000Z"
+  },
+  {
+    "id": "f51ddb99-9c0b-4ef8-bb6d-6bb9bd380a16",
+    "email": "damar@kampus.com",
+    "password": "12345678",
+    "full_name": "Damarjati",
+    "role": "student",
+    "created_at": "2025-11-30T09:01:00.000Z"
+  },
+  {
+    "id": "g62eee99-9c0b-4ef8-bb6d-6bb9bd380a17",
+    "email": "tugus@kampus.com",
+    "password": "12345678",
+    "full_name": "Tugus Wicaksono",
+    "role": "student",
+    "created_at": "2025-11-30T09:02:00.000Z"
+  },
+  {
+    "id": "h73fff99-9c0b-4ef8-bb6d-6bb9bd380a18",
+    "email": "rama@kampus.com",
+    "password": "12345678",
+    "full_name": "Rama Pradana",
+    "role": "admin",
+    "created_at": "2025-11-30T09:03:00.000Z"
+  },
+  {
+    "id": null,
+    "email": "penggunabaru@testing.com",
+    "password": "passwordBaru123",
+    "full_name": "Pengguna Postman",
+    "role": "student",
+    "created_at": "2025-11-30T10:48:38.827Z"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "time-001",
+    "title": "Pengajuan Judul",
+    "description": "Mahasiswa mengajukan judul proyek capstone.",
+    "start_at": "2024-02-01T00:00:00Z",
+    "end_at": "2024-02-14T23:59:59Z"
+  },
+  {
+    "id": "time-002",
+    "title": "Pengerjaan Sprint 1",
+    "description": "Implementasi fitur dasar.",
+    "start_at": "2024-03-01T00:00:00Z",
+    "end_at": "2024-03-14T23:59:59Z"
+  }
+]

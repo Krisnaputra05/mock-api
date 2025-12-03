@@ -25,6 +25,9 @@ app.use(express.json());
 // --- Routes Utama ---
 // Pasang authRouter pada path /api/auth
 app.use("/api/auth", authRouter);
+app.use("/api/admin", require("./src/admin"));
+app.use("/api/user", require("./src/user"));
+app.use("/api/group", require("./src/group"));
 
 // --- Menjalankan Server ---
 app.listen(port, () => {

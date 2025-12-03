@@ -1,0 +1,14 @@
+[
+  {
+    "id": "doc-001",
+    "title": "Panduan Penulisan Laporan Capstone",
+    "url": "https://example.com/docs/panduan-laporan.pdf",
+    "order_idx": 1
+  },
+  {
+    "id": "doc-002",
+    "title": "Template Presentasi Sidang",
+    "url": "https://example.com/docs/template-ppt.pptx",
+    "order_idx": 2
+  }
+]

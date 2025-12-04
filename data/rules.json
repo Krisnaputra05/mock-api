@@ -1,0 +1,10 @@
+[
+  {
+    "user_attribute": "learning_path",
+    "attribute_value": "Front-End Web & Back-End with AI",
+    "operator": ">=",
+    "value": "5",
+    "is_active": true,
+    "batch_id": "BATCH_001"
+  }
+]

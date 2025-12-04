@@ -153,4 +153,83 @@ router.get("/groups", requireAdmin, (req, res) => {
   });
 });
 
+// e. Set Group Rules
+router.post("/rules", requireAdmin, (req, res) => {
+  const { batch_id, rules } = req.body;
+
+  if (!batch_id || !rules || !Array.isArray(rules)) {
+    return res.status(400).json({
+      message: "Batch ID dan Rules (array) wajib diisi.",
+      error: { code: "VALIDATION_FAILED" },
+      meta: { timestamp: new Date().toISOString() },
+    });
+  }
+
+  // Tambahkan field is_active: true secara default
+  const newRules = rules.map(r => ({ ...r, is_active: true, batch_id }));
+  
+  // Kita overwrite rules yang ada (sesuai simplifikasi mock)
+  // Atau append? Biasanya set rules itu replace untuk batch tertentu.
+  // Kita replace semua isi rules.json dengan yang baru ini untuk kemudahan mock.
+  
+  if (writeData("rules.json", newRules)) {
+    res.status(201).json({
+      message: "Aturan grup berhasil disimpan.",
+      data: newRules,
+      meta: { timestamp: new Date().toISOString() },
+    });
+  } else {
+    res.status(500).json({
+      message: "Gagal menyimpan aturan.",
+      error: { code: "INTERNAL_SERVER_ERROR" },
+      meta: { timestamp: new Date().toISOString() },
+    });
+  }
+});
+
+// f. Validate Group Registration
+router.post("/groups/:groupId/validate", requireAdmin, (req, res) => {
+  const { groupId } = req.params;
+  const { status, rejection_reason } = req.body;
+
+  if (!["accepted", "rejected"].includes(status)) {
+    return res.status(400).json({
+      message: "Status harus 'accepted' atau 'rejected'.",
+      error: { code: "VALIDATION_FAILED" },
+      meta: { timestamp: new Date().toISOString() },
+    });
+  }
+
+  const groups = readData("groups.json");
+  const groupIndex = groups.findIndex((g) => g.id === groupId);
+
+  if (groupIndex === -1) {
+    return res.status(404).json({
+      message: "Grup tidak ditemukan.",
+      error: { code: "NOT_FOUND" },
+      meta: { timestamp: new Date().toISOString() },
+    });
+  }
+
+  groups[groupIndex].status = status;
+  if (status === "rejected" && rejection_reason) {
+    groups[groupIndex].rejection_reason = rejection_reason;
+  }
+  groups[groupIndex].validated_at = new Date().toISOString();
+
+  if (writeData("groups.json", groups)) {
+    res.status(200).json({
+      message: `Grup berhasil divalidasi sebagai ${status}.`,
+      data: groups[groupIndex],
+      meta: { timestamp: new Date().toISOString() },
+    });
+  } else {
+    res.status(500).json({
+      message: "Gagal memvalidasi grup.",
+      error: { code: "INTERNAL_SERVER_ERROR" },
+      meta: { timestamp: new Date().toISOString() },
+    });
+  }
+});
+
 module.exports = router;

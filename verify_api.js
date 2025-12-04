@@ -55,30 +55,55 @@ async function run() {
     console.log("Admin Login Status:", adminLogin.status);
     const adminToken = adminLogin.body.data.token;
 
-    console.log("\n2. Create Group (Admin)...");
-    const groupRes = await post('/api/admin/groups', { group_name: 'Test Group', batch_id: 'BATCH-001' }, adminToken);
-    console.log("Create Group Status:", groupRes.status);
-    console.log("Group ID:", groupRes.body.group?.id);
+    console.log("\n2. Set Group Rules (Admin)...");
+    const rulesData = {
+      batch_id: "BATCH-001",
+      rules: [
+        {
+          user_attribute: "learning_path",
+          attribute_value: "Machine Learning",
+          operator: ">=",
+          value: "2"
+        }
+      ]
+    };
+    const setRules = await post('/api/admin/rules', rulesData, adminToken);
+    console.log("Set Rules Status:", setRules.status);
 
-    console.log("\n3. List Groups (Admin)...");
-    const listGroups = await get('/api/admin/groups', adminToken);
-    console.log("List Groups Status:", listGroups.status);
-    console.log("Groups Count:", listGroups.body.data.length);
-
-    console.log("\n4. Login Student...");
+    console.log("\n3. Login Student (Machine Learning)...");
     const studentLogin = await post('/api/auth/login', { email: 'damar@kampus.com', password: '12345678' });
-    console.log("Student Login Status:", studentLogin.status);
     const studentToken = studentLogin.body.data.token;
+    const studentId1 = "f51ddb99-9c0b-4ef8-bb6d-6bb9bd380a16"; // Damar (ML)
+    const studentId2 = "g62eee99-9c0b-4ef8-bb6d-6bb9bd380a17"; // Tugus (ML)
 
-    console.log("\n5. Get Profile (Student)...");
-    const profile = await get('/api/user/profile', studentToken);
-    console.log("Profile Status:", profile.status);
-    console.log("Name:", profile.body.data.name);
+    console.log("\n4. Get Rules (Student)...");
+    const getRules = await get('/api/group/rules', studentToken);
+    console.log("Get Rules Status:", getRules.status);
+    console.log("Active Rules:", getRules.body.data.length);
 
-    console.log("\n6. List Docs (Student)...");
-    const docs = await get('/api/user/docs', studentToken);
-    console.log("Docs Status:", docs.status);
-    console.log("Docs Count:", docs.body.data.length);
+    console.log("\n5. Register Team (Success Case)...");
+    // Register team with 2 ML students (should pass)
+    const teamData = {
+      group_name: "Team AI Super",
+      member_ids: [studentId1, studentId2]
+    };
+    const registerTeam = await post('/api/group/register', teamData, studentToken);
+    console.log("Register Team Status:", registerTeam.status);
+    const groupId = registerTeam.body.data?.group_id;
+    console.log("New Group ID:", groupId);
+
+    if (groupId) {
+      console.log("\n6. Validate Team (Admin)...");
+      const validate = await post(`/api/admin/groups/${groupId}/validate`, { status: "accepted" }, adminToken);
+      console.log("Validate Team Status:", validate.status);
+      console.log("New Status:", validate.body.data.status);
+    }
+
+    console.log("\n7. Register Team (Fail Case - Double Submission)...");
+    // Try to register same members again
+    const failRegister = await post('/api/group/register', teamData, studentToken);
+    console.log("Fail Register Status:", failRegister.status); // Should be 400
+    console.log("Error Code:", failRegister.body.error?.code);
 
   } catch (error) {
     console.error("Error:", error);

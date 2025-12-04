@@ -3,21 +3,15 @@
 const express = require("express");
 const authRouter = require("./src/auth"); // Import router langsung dari auth.js
 
+const cors = require("cors"); // Import cors
+
 const app = express();
 const port = 3000;
 
 // --- Middleware Global ---
 
 // 1. Mengaktifkan CORS
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+app.use(cors());
 
 // 2. Middleware untuk parsing body JSON
 app.use(express.json());

@@ -87,15 +87,7 @@ router.post("/register", requireAuth, (req, res) => {
   const groups = readData("groups.json");
   const allUsers = readData("user.json");
   
-  // Asumsi: grup valid adalah yang statusnya != 'rejected' (bisa 'draft', 'pending_validation', 'accepted')
-  // Atau mungkin hanya 'accepted' dan 'pending_validation'? Mari kita asumsikan pending & accepted.
-  // Tapi di mock awal status default 'draft'.
-  // Mari kita cek apakah user ID ada di grup mana pun yang tidak rejected.
-  
-  // Namun, struktur `groups.json` awal kita belum punya `members`.
-  // Kita perlu update struktur `groups.json` saat register ini untuk menyimpan `members`.
-  // Struktur awal: { id, group_name, batch_id, creator_user_ref, status }
-  // Kita akan tambahkan `members` array of user IDs.
+
 
   const doubleUserIds = [];
   
